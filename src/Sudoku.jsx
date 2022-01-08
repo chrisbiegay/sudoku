@@ -33,8 +33,7 @@ export default function Sudoku() {
 
   return (
     <div className="Sudoku">
-      <Grid gridArray={gridArray} setGridArray={setGridArray} selectedCellIndex={selectedCellIndex}
-            setSelectedCellIndex={setSelectedCellIndex}/>
+      <Grid gridArray={gridArray} selectedCellIndex={selectedCellIndex} setSelectedCellIndex={setSelectedCellIndex}/>
       <NumberButtons onNumberButtonClick={onNumberButtonClick}/>
     </div>
   );
