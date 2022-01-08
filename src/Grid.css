@@ -1,0 +1,31 @@
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 152px);
+    row-gap: 4px;
+    column-gap: 4px;
+
+    width: 464px; /* 50px * 9 squares + 6 thin square borders + 4px * 2 thick square borders */
+    margin: 20px auto;
+    background-color: #000;
+    padding: 4px;
+}
+
+.sudoku-box {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+    row-gap: 1px;
+    column-gap: 1px;
+}
+
+.sudoku-cell {
+    height: 50px;
+    line-height: 50px;     /* centers text vertically */
+    text-align: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    background-color: #FFF;
+}
+
+.sudoku-cell.selected {
+    background-color: lightblue;
+}

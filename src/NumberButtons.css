@@ -1,0 +1,17 @@
+.number-buttons {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    column-gap: 2px;
+
+
+    width: 472px;
+    margin: 20px auto;
+}
+
+.number-buttons button {
+    height: 50px;
+    line-height: 50px;
+    font-size: 30px;
+    font-family: sans-serif;
+    padding: 0;
+}
