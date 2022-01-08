@@ -5,36 +5,77 @@ import NumberButtons from "./NumberButtons"
 import {EASY_PUZZLES} from "./sudokuPuzzles"
 import {BOX_INDEXES} from "./sudokuUtil"
 
-// TODO: Implement game play, undo
-
-// easy50.txt and top95.txt pulled from norvig.com.
+/*
+ * Terminology:
+ *   - Grid: a 9x9 sudoku puzzle.
+ *   - Cell/square: a square that holds a number in the grid.
+ *   - Box: a 3x3 square containing 9 cells.
+ *
+ * Sample puzzles in easy50.txt and top95.txt pulled from norvig.com.
+ */
 
 /**
  * Top-level sudoku app component.
  */
 export default function Sudoku() {
   const [gridArray, setGridArray] = useState(generateRandomSudokuPuzzle())
+  const [gridArrayHistory, setGridArrayHistory] = useState([gridArray])
   const [selectedCellIndex, setSelectedCellIndex] = useState(null)
 
-  function onNumberButtonClick(numberClicked) {
+  function onNumberButtonClicked(numberClicked) {
     if (selectedCellIndex === null) {
       alert("You must select a square first.")
     } else {
-      if (moveIsValid(gridArray, selectedCellIndex, numberClicked)) {
+      if (isNumberEntryValid(gridArray, selectedCellIndex, numberClicked)) {
         let newGridArray = [...gridArray]
         newGridArray[selectedCellIndex] = numberClicked
         setGridArray(newGridArray)
+
+        let newGridArrayHistory = [...gridArrayHistory]
+        newGridArrayHistory.push(newGridArray)
+        setGridArrayHistory(newGridArrayHistory)
+
         setSelectedCellIndex(null)
       } else {
-        alert(`The number ${numberClicked} cannot be placed in that square.`)
+        alert(`That is not a valid square for the number ${numberClicked}.`)
       }
+    }
+  }
+
+  function onUndoClicked() {
+    if (gridArrayHistory.length > 1) {
+      let newGridArrayHistory = [...gridArrayHistory]
+      newGridArrayHistory.pop()
+      setGridArrayHistory(newGridArrayHistory)
+
+      const newGridArray = [...newGridArrayHistory[newGridArrayHistory.length - 1]]
+      setGridArray(newGridArray)
+
+      setSelectedCellIndex(null)
+    }
+  }
+
+  function onResetClicked() {
+    if (gridArrayHistory.length > 1) {
+      const newGridArray = [...gridArrayHistory[0]]
+      setGridArray(newGridArray)
+
+      let newGridArrayHistory = [newGridArray]
+      setGridArrayHistory(newGridArrayHistory)
+
+      setSelectedCellIndex(null)
     }
   }
 
   return (
     <div className="Sudoku">
       <Grid gridArray={gridArray} selectedCellIndex={selectedCellIndex} setSelectedCellIndex={setSelectedCellIndex}/>
-      <NumberButtons onNumberButtonClick={onNumberButtonClick}/>
+      <NumberButtons onNumberButtonClick={onNumberButtonClicked}/>
+      <div className={"undo-buttons"}>
+        <button onClick={onUndoClicked}>Undo</button>
+        <button onClick={onResetClicked}>Reset</button>
+      </div>
+      <p className={"more-to-come"}>(More to come...)</p>
     </div>
   );
 }
@@ -50,10 +91,10 @@ function generateRandomSudokuPuzzle() {
     .map((num) => num === "0" ? null : num)
 }
 
-function moveIsValid(gridArray, selectedCellIndex, numberClicked) {
-  return !rowContainsNumber(gridArray, numberClicked, selectedCellIndex) &&
-    !columnContainsNumber(gridArray, numberClicked, selectedCellIndex) &&
-    !boxContainsNumber(gridArray, numberClicked, selectedCellIndex)
+function isNumberEntryValid(gridArray, cellIndex, numberToEnter) {
+  return !rowContainsNumber(gridArray, numberToEnter, cellIndex) &&
+    !columnContainsNumber(gridArray, numberToEnter, cellIndex) &&
+    !boxContainsNumber(gridArray, numberToEnter, cellIndex)
 }
 
 function rowContainsNumber(gridArray, numValue, cellIndexInRow) {
