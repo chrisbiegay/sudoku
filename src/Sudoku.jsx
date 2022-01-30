@@ -5,6 +5,8 @@ import NumberButtons from "./NumberButtons"
 import {EASY_PUZZLES} from "./sudokuPuzzles"
 import {BOX_INDEXES} from "./sudokuUtil"
 
+// todo: optimize for mobile devices
+
 /*
  * Terminology:
  *   - Grid: a 9x9 sudoku puzzle.

@@ -6,6 +6,16 @@ body {
     margin: 0;
 }
 
+button {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0;
+    border: #555 1px solid;
+    border-radius: 3px;
+    background-color: #eee;
+}
+
 .undo-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
